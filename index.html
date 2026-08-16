@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Judgment OS – Decision Journal & Calibration System</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --surface: #1a1d24;
+      --surface2: #242830;
+      --border: #2e3340;
+      --text: #e8eaed;
+      --text-muted: #9aa0a6;
+      --accent: #6c9eff;
+      --accent-hover: #8bb3ff;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .header-actions { display: flex; gap: 10px; }
+
+    button, .btn {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-weight: 500;
+    }
+
+    button:hover, .btn:hover {
+      background: var(--border);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0f1115;
+      border-color: var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+    }
+
+    .tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: 8px 8px 0 0;
+      font-weight: 500;
+    }
+
+    .tab.active {
+      color: var(--accent);
+      background: var(--surface);
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .form-grid {
+      display: grid;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 11px 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .row { grid-template-columns: 1fr; }
+    }
+
+    .decision-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .decision-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .decision-card:hover {
+      border-color: var(--accent);
+    }
+
+    .decision-card.reviewed {
+      border-left: 4px solid var(--success);
+    }
+
+    .decision-card.pending {
+      border-left: 4px solid var(--warning);
+    }
+
+    .decision-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .decision-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .badge-pending { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+    .badge-reviewed { background: rgba(52, 211, 153, 0.15); color: var(--success); }
+
+    .decision-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+    }
+
+    .modal h2 {
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+    }
+
+    .detail-section {
+      margin-bottom: 20px;
+    }
+
+    .detail-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .detail-value {
+      background: var(--bg);
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      white-space: pre-wrap;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .filters select, .filters input {
+      width: auto;
+      min-width: 140px;
+    }
+
+    .calibration-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .calibration-box h3 {
+      margin-bottom: 12px;
+    }
+
+    .note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">Judgment<span>OS</span></div>
+      <div class="header-actions">
+        <button onclick="exportData()">Export JSON</button>
+        <button onclick="importData()">Import</button>
+        <button class="btn-primary" onclick="showNewDecision()">+ New Decision</button>
+      </div>
+    </header>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="decisions" onclick="switchTab('decisions')">Decisions</button>
+      <button class="tab" data-tab="calibration" onclick="switchTab('calibration')">Calibration</button>
+      <button class="tab" data-tab="about" onclick="switchTab('about')">About</button>
+    </div>
+
+    <div id="panel-decisions" class="panel active">
+      <div class="filters">
+        <select id="filterStatus" onchange="renderDecisions()">
+          <option value="all">All Status</option>
+          <option value="pending">Pending Review</option>
+          <option value="reviewed">Reviewed</option>
+        </select>
+        <select id="filterTag" onchange="renderDecisions()">
+          <option value="all">All Tags</option>
+          <option value="Career">Career</option>
+          <option value="Money">Money</option>
+          <option value="Business">Business</option>
+          <option value="Health">Health</option>
+          <option value="Relationship">Relationship</option>
+          <option value="Other">Other</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="Search..." oninput="renderDecisions()">
+      </div>
+      <div class="decision-list" id="decisionList"></div>
+    </div>
+
+    <div id="panel-calibration" class="panel">
+      <div class="calibration-box">
+        <h3>Confidence Calibration</h3>
+        <p>This shows how well your stated confidence matches real outcomes. Aim for your 70% confidence decisions to succeed ~70% of the time.</p>
+        <div id="calibrationStats" style="margin-top: 20px;"></div>
+        <p class="note">You need at least 10–15 reviewed decisions for meaningful patterns.</p>
+      </div>
+      <div id="patternInsights"></div>
+    </div>
+
+    <div id="panel-about" class="panel">
+      <div class="calibration-box">
+        <h3>How to use Judgment OS</h3>
+        <ol style="margin: 16px 0 16px 20px; color: var(--text-muted);">
+          <li style="margin-bottom: 10px;"><strong>Capture at decision time</strong> — Write the decision before you know the outcome. Include options, reasoning, expected result, and your confidence level.</li>
+          <li style="margin-bottom: 10px;"><strong>Set a review date</strong> — Usually 30, 90, or 180 days later (or when the outcome becomes clear).</li>
+          <li style="margin-bottom: 10px;"><strong>Review honestly</strong> — When the date arrives, record what actually happened and rate the outcome.</li>
+          <li style="margin-bottom: 10px;"><strong>Look for patterns</strong> — Over time the Calibration tab will show where your judgment is strong or overconfident.</li>
+        </ol>
+        <p style="color: var(--text-muted);">Your data stays only in this browser (localStorage). Export regularly so you never lose it.</p>
+      </div>
+    </div>
+
+    <footer>
+      Judgment OS · Private Decision Journal & Calibration System<br>
+      Data never leaves your device
+    </footer>
+  </div>
+
+  <!-- The rest of the JavaScript is included in the full version -->
+  <script>
+    // Note: Full interactive version available in the download package.
+    // This GitHub Pages version is a live demo landing + app shell.
+    document.getElementById('decisionList').innerHTML = '<div class="empty">This is the live demo shell.<br><br>Download the full working app from the repository releases or the product page to start capturing decisions.</div>';
+  </script>
+</body>
+</html>
