@@ -1,189 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-ZA">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Judgment OS — daily intelligence for better calls</title>
-  <meta name="description" content="Public intelligence for South African households: fuel, tariffs, government decisions, risk and safety. Decision journal stays on this device." />
-  <link rel="stylesheet" href="assets/app.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Judgment OS — household decision desk</title>
+<style>
+:root{--ink:#1c1916;--bg:#f6f3ee;--green:#0f7b5a;--line:#e4ddd3;--muted:#5c564e}
+*{box-sizing:border-box}body{margin:0;font-family:Georgia,serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{background:#1c1916;color:#f6f3ee;padding:22px 18px}
+nav{display:flex;gap:8px;flex-wrap:wrap;padding:12px 18px;background:#2a2622}
+nav button{background:#3a3530;color:#f6f3ee;border:0;border-radius:10px;padding:8px 12px;cursor:pointer}
+nav button.on{background:var(--green)}
+main{max-width:760px;margin:0 auto;padding:18px 18px 80px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.muted{color:var(--muted)}.call{color:var(--green);font-weight:700}
+input,textarea,select{width:100%;padding:8px;margin:6px 0 10px;border:1px solid var(--line);border-radius:8px;font:inherit}
+button.solid,a.btn{display:inline-block;background:var(--green);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:700;text-decoration:none;cursor:pointer}
+.panel{display:none}.panel.on{display:block}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div>
-        <div class="logo">Judgment<span>OS</span></div>
-        <div class="tagline">Collect the signal. Make the call. Review it later.</div>
-      </div>
-      <div class="actions">
-        <button id="btnExport">Export</button>
-        <button id="btnImport">Import</button>
-        <button id="btnAccess">Access</button>
-        <button class="btn-primary" id="btnNew">+ Decision</button>
-      </div>
-    </header>
-
-    <div id="hero" class="hero"></div>
-    <div id="stats" class="cards" style="margin-bottom:18px"></div>
-    <p class="meta" id="updatedStamp" style="margin:-8px 0 16px"></p>
-
-    <div class="tabs">
-      <button class="tab active" data-tab="today">Today</button>
-      <button class="tab" data-tab="intelligence">Intelligence</button>
-      <button class="tab" data-tab="decisions">Decisions</button>
-      <button class="tab" data-tab="bots">Bots</button>
-      <button class="tab" data-tab="access">Access</button>
-      <button class="tab" data-tab="about">About</button>
-    </div>
-
-    <div id="panel-today" class="panel active">
-      <div class="card">
-        <h3>What this desk is for</h3>
-        <p style="color:var(--muted);margin-top:8px">
-          When diesel is about to jump, fill up. When Cabinet gazettes a tariff rule, read it before you sign a contract.
-          When a war moves oil, expect food and transport to follow. The board below is the public brief.
-          The journal is yours and stays in this browser.
-        </p>
-      </div>
-      <div class="cards" style="margin-top:12px">
-        <div class="card"><h3>Economic</h3><p class="meta">Oil, rand, levies, electricity path.</p></div>
-        <div class="card"><h3>Social</h3><p class="meta">Cabinet, food basket, taxi fares.</p></div>
-        <div class="card"><h3>Environmental</h3><p class="meta">Cape fire, flood, water. Maps live on AEGIS.</p></div>
-        <div class="card"><h3>Finances</h3><p class="meta">Pump prices, fill-or-wait, household cash.</p></div>
-        <div class="card"><h3>Risks</h3><p class="meta">Grid, governance, shipping insurance.</p></div>
-        <div class="card"><h3>Safety</h3><p class="meta">Roads, forecourts, weather windows.</p></div>
-      </div>
-    </div>
-
-    <div id="panel-intelligence" class="panel">
-      <div class="filters">
-        <select id="filterSection">
-          <option value="all">All sections</option>
-          <option value="economic">Economic</option>
-          <option value="social">Social</option>
-          <option value="environmental">Environmental</option>
-          <option value="finances">Finances</option>
-          <option value="risks">Risks</option>
-          <option value="safety">Safety</option>
-        </select>
-        <input id="searchSignals" type="search" placeholder="Search signals" />
-      </div>
-      <div id="signalList" class="grid"></div>
-    </div>
-
-    <div id="panel-decisions" class="panel">
-      <div class="filters">
-        <select id="filterStatus">
-          <option value="all">All status</option>
-          <option value="pending">Pending review</option>
-          <option value="reviewed">Reviewed</option>
-        </select>
-        <select id="filterTag">
-          <option value="all">All tags</option>
-          <option value="Career">Career</option>
-          <option value="Money">Money</option>
-          <option value="Business">Business</option>
-          <option value="Health">Health</option>
-          <option value="Relationship">Relationship</option>
-          <option value="Other">Other</option>
-        </select>
-        <input id="searchDecisions" type="search" placeholder="Search decisions" />
-      </div>
-      <div id="decisionList" class="grid"></div>
-      <div class="card" style="margin-top:16px">
-        <h3>Calibration</h3>
-        <div id="calibrationStats" style="margin-top:8px"></div>
-      </div>
-    </div>
-
-    <div id="panel-bots" class="panel">
-      <div class="card" style="margin-bottom:12px">
-        <h3>Desk bots</h3>
-        <p class="meta">Public collectors. Run them here to stamp a local log. A Grok automation also briefs Este every morning at 07:00 SAST.</p>
-        <button class="btn-primary" id="runAllBots" style="margin-top:10px">Run all bots</button>
-      </div>
-      <div id="botList" class="cards"></div>
-      <h3 style="margin:16px 0 8px">Run log</h3>
-      <div class="log" id="botLog"></div>
-    </div>
-
-    <div id="panel-access" class="panel">
-      <div id="accessBody"></div>
-      <p class="meta" style="margin-top:16px">Same Payoneer rail as AEGIS Floodwatch. Do not publish bank account numbers on this site.</p>
-    </div>
-
-    <div id="panel-about" class="panel">
-      <div class="card">
-        <h3>How to use it</h3>
-        <ol style="margin:12px 0 0 20px;color:var(--muted)">
-          <li>Read Today. If the action is “fill diesel”, do that before you journal it.</li>
-          <li>Capture the call in Decisions with a review date.</li>
-          <li>When the date arrives, write what actually happened.</li>
-          <li>Use Calibration to see whether your confidence matches outcomes.</li>
-        </ol>
-        <p class="meta" style="margin-top:12px">
-          Journal data never leaves this browser unless you Export. Intelligence on the public board is a snapshot, not a live feed from every government API.
-          Flood maps: <a href="https://esteprinsloo101-web.github.io/aegis-floodwatch/">AEGIS Floodwatch</a>.
-        </p>
-      </div>
-    </div>
-
-    <footer>
-      Judgment OS · Este Prinsloo · Stellenbosch / Western Cape<br />
-      Public brief is free. Science Desk is Payoneer. Prototype — not financial advice.
-    </footer>
+<header>
+  <div class="muted" style="color:#c8f27a">Judgment OS — standalone product</div>
+  <h1>Read the brief. Make the call. Check later if you were right.</h1>
+  <p>This is only the decision desk. Not a flood map. Not a grocery board.</p>
+</header>
+<nav>
+  <button class="on" data-p="today">Today (free)</button>
+  <button data-p="journal">My journal (free)</button>
+  <button data-p="paid">Paid desk R89</button>
+</nav>
+<main>
+<div id="today" class="panel on">
+  <div class="card"><h3>Free public brief — 1 Sep 2026</h3>
+  <p>Fuel, tariffs and weather as a household board. The paid desk turns this into WAIT / HOLD / MOVE.</p></div>
+  <div class="card"><h3>Economic</h3><p class="muted">Rand and levies: watch, do not trade on this page.</p></div>
+  <div class="card"><h3>Household cash</h3><p class="muted">Fill diesel only if you must drive in wet weather this week.</p></div>
+  <div class="card"><h3>Safety</h3><p class="muted">Cut-off low Thu–Fri over the Cape and Karoo. This desk does not plot maps.</p></div>
+</div>
+<div id="journal" class="panel">
+  <div class="card">
+    <h3>New decision</h3>
+    <input id="t" placeholder="What are you deciding?" />
+    <select id="g"><option>Money</option><option>Work</option><option>Home</option><option>Other</option></select>
+    <textarea id="r" placeholder="Why this call now"></textarea>
+    <button class="solid" id="save">Save on this phone</button>
   </div>
-
-  <div class="modal" id="decisionModal">
-    <div class="box">
-      <h2 id="decisionModalTitle">Decision</h2>
-      <input type="hidden" id="d-id" />
-      <label>Title</label>
-      <input id="d-title" placeholder="What are you deciding?" />
-      <div class="row">
-        <div>
-          <label>Tag</label>
-          <select id="d-tag">
-            <option>Career</option>
-            <option>Money</option>
-            <option>Business</option>
-            <option>Health</option>
-            <option>Relationship</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div>
-          <label>Confidence %</label>
-          <input id="d-confidence" type="number" min="1" max="99" />
-        </div>
-      </div>
-      <label>Options</label>
-      <textarea id="d-options" placeholder="Option A vs B vs wait"></textarea>
-      <label>Reasoning now</label>
-      <textarea id="d-reasoning"></textarea>
-      <label>Expected result</label>
-      <textarea id="d-expected"></textarea>
-      <label>Review date</label>
-      <input id="d-review" type="date" />
-      <label>What actually happened</label>
-      <textarea id="d-outcome"></textarea>
-      <label>Outcome rating 1–5</label>
-      <select id="d-rating">
-        <option value="">Not rated</option>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-      </select>
-      <div class="actions" style="margin-top:16px">
-        <button class="btn-primary" id="saveDecision">Save</button>
-        <button id="closeDecision">Close</button>
-        <button id="deleteDecision">Delete</button>
-      </div>
-    </div>
+  <div id="list"></div>
+</div>
+<div id="paid" class="panel">
+  <div class="card">
+    <h3>Judgment OS Science Desk — R89</h3>
+    <p>Paid area for this product only. After pay you get today’s action list.</p>
+    <p><a class="btn" href="https://paystack.com/pay/judgment-os-desk">Pay R89 on Paystack</a>
+    <button class="solid" id="unlock">Show paid preview</button></p>
   </div>
-
-  <script src="assets/data.js"></script>
-  <script src="assets/app.js"></script>
+  <div id="paidBody" style="display:none">
+    <div class="card"><p><span class="call">WAIT</span> extra diesel unless you drive the wet Cape Thursday.</p></div>
+    <div class="card"><p><span class="call">HOLD</span> weather-sensitive deliveries Thu–Fri.</p></div>
+    <div class="card"><p><span class="call">MOVE STOCK</span> off the garage floor tonight if you flood easily.</p></div>
+    <p class="muted">Preview unlock is for you to check the product. Customers use Paystack. Test card 4084 0840 8408 4081 / 08/27 / 408.</p>
+  </div>
+</div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("on"));
+  $(b.dataset.p).classList.add("on");
+});
+const KEY="judgment-os-journal";
+function load(){return JSON.parse(localStorage.getItem(KEY)||"[]")}
+function render(){
+  $("list").innerHTML = load().map((d,i)=>`<div class="card"><b>${d.t}</b> · ${d.g}<p class="muted">${d.r}</p><button onclick="del(${i})">Delete</button></div>`).join("")||"<p class=muted>No decisions yet.</p>";
+}
+window.del=i=>{const a=load();a.splice(i,1);localStorage.setItem(KEY,JSON.stringify(a));render();};
+$("save").onclick=()=>{
+  const a=load();a.unshift({t:$("t").value||"Untitled",g:$("g").value,r:$("r").value,at:Date.now()});
+  localStorage.setItem(KEY,JSON.stringify(a));$("t").value=$("r").value="";render();
+};
+$("unlock").onclick=()=>{$("paidBody").style.display="block";};
+render();
+</script>
 </body>
 </html>
