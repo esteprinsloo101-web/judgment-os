@@ -2,87 +2,447 @@
 <html lang="en-ZA">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Judgment OS — household decision desk</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#07090d" />
+<meta name="description" content="Judgment OS — daily intelligence, live locator deals, and a visual money desk for South African households." />
+<title>Judgment OS — see it. call it. keep the rand.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://unpkg.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-:root{--ink:#1c1916;--bg:#f6f3ee;--green:#0f7b5a;--line:#e4ddd3;--muted:#5c564e}
-*{box-sizing:border-box}body{margin:0;font-family:Georgia,serif;background:var(--bg);color:var(--ink);line-height:1.45}
-header{background:#1c1916;color:#f6f3ee;padding:22px 18px}
-nav{display:flex;gap:8px;flex-wrap:wrap;padding:12px 18px;background:#2a2622}
-nav button{background:#3a3530;color:#f6f3ee;border:0;border-radius:10px;padding:8px 12px;cursor:pointer}
-nav button.on{background:var(--green)}
-main{max-width:760px;margin:0 auto;padding:18px 18px 80px}
-.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
-.muted{color:var(--muted)}.call{color:var(--green);font-weight:700}
-input,textarea,select{width:100%;padding:8px;margin:6px 0 10px;border:1px solid var(--line);border-radius:8px;font:inherit}
-button.solid,a.btn{display:inline-block;background:var(--green);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:700;text-decoration:none;cursor:pointer}
+:root{
+  --bg:#07090d;--panel:#10151c;--panel2:#161d26;--line:#243040;
+  --ink:#e8eef4;--muted:#8b97a6;--dim:#5d6a78;
+  --lime:#d4ff4a;--mint:#3ee0a4;--warn:#ff6b4a;--gold:#f0c14b;--sky:#6cb6ff;
+  --ok:#3ee0a4;--bad:#ff6b4a;
+}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Sora,system-ui,sans-serif}
+body{min-height:100dvh;padding-bottom:84px}
+h1,h2,h3,.display{font-family:Fraunces,Georgia,serif;letter-spacing:-.02em}
+a{color:var(--lime)}button,input,select,textarea{font:inherit}
+.top{position:sticky;top:0;z-index:20;background:linear-gradient(#07090de6,#07090dcc);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 16px 8px}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:10px}
+.mark{width:34px;height:34px;border-radius:10px;background:radial-gradient(circle at 30% 20%,#f0c14b,#9be15d 45%,#0b3 90%);box-shadow:0 0 24px #d4ff4a44}
+.eyebrow{font-size:11px;color:var(--lime);text-transform:uppercase;letter-spacing:.14em}
+.live{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 8px var(--mint)}
+.hero{padding:10px 16px 0}
+.hero h1{font-size:clamp(28px,6vw,44px);line-height:1.05;margin:6px 0 8px}
+.sub{color:var(--muted);font-size:14px;max-width:42rem}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.pill{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 10px;font-size:12px}
+.pill b{color:var(--lime)}
+.wrap{padding:14px 16px 24px;max-width:1100px;margin:0 auto}
+.grid{display:grid;gap:12px}
+@media(min-width:800px){.g2{grid-template-columns:1.2fr .8fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:18px;padding:14px}
+.card h3{margin:0 0 8px;font-size:18px}
+.kpi{display:flex;flex-direction:column;gap:2px;min-height:88px}
+.kpi .n{font-family:Fraunces,serif;font-size:28px}
+.kpi .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.up{color:var(--warn)}.down{color:var(--mint)}.flat{color:var(--gold)}
+.call{display:flex;gap:12px;align-items:stretch}
+.stamp{flex:0 0 86px;border-radius:16px;background:var(--warn);color:#1a0b08;display:flex;align-items:center;justify-content:center;font-weight:700;letter-spacing:.04em;text-align:center;padding:8px}
+.stamp.wait{background:var(--gold);color:#2a1d00}
+.stamp.save{background:var(--mint);color:#04281b}
+.stamp.buy{background:var(--lime);color:#14180a}
+.bars{display:flex;align-items:flex-end;gap:6px;height:92px;margin-top:8px}
+.bars i{flex:1;border-radius:8px 8px 3px 3px;background:linear-gradient(#d4ff4a,#3ee0a4);opacity:.9;display:block}
+.legend{display:flex;justify-content:space-between;color:var(--dim);font-size:10px;margin-top:4px}
+.chiprow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.chip{border:1px solid var(--line);background:#0c1117;color:var(--muted);border-radius:999px;padding:7px 11px;cursor:pointer}
+.chip.on{background:#1a2610;color:var(--lime);border-color:#3a4f16}
+.deal{display:grid;grid-template-columns:64px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.deal:last-child{border:0}
+.price{font-family:Fraunces,serif;font-size:22px;color:var(--lime)}
+.was{color:var(--dim);text-decoration:line-through;font-size:12px}
+#map{height:280px;border-radius:16px;border:1px solid var(--line)}
+label{display:block;font-size:12px;color:var(--muted);margin:8px 0 4px}
+input,select,textarea{width:100%;background:#0c1117;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+textarea{min-height:72px;resize:vertical}
+.btn,button.solid,a.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--lime);color:#14180a;border:0;border-radius:12px;padding:11px 14px;font-weight:700;text-decoration:none;cursor:pointer}
+.btn.ghost,button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.wide,.solid.wide{width:100%}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.ringbox{display:flex;align-items:center;gap:14px}
+svg.ring{width:120px;height:120px}
+.env{margin:8px 0}
+.env .track{height:10px;background:#0c1117;border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.env .fill{height:100%;background:linear-gradient(90deg,var(--mint),var(--lime))}
+.env.hot .fill{background:linear-gradient(90deg,var(--warn),var(--gold))}
+.muted{color:var(--muted)} .tiny{font-size:12px;color:var(--dim)}
 .panel{display:none}.panel.on{display:block}
+.bot{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.bot .st{width:10px;height:10px;border-radius:50%;background:var(--mint)}
+.tier{display:flex;flex-direction:column;gap:8px}
+.tier .amt{font-family:Fraunces,serif;font-size:32px}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:space-around;background:#0b0f14ee;border-top:1px solid var(--line);padding:8px 4px calc(8px + env(safe-area-inset-bottom))}
+.nav button{flex:1;background:none;border:0;color:var(--dim);padding:6px 2px;font-size:10px;letter-spacing:.04em;text-transform:uppercase}
+.nav button.on{color:var(--lime)}
+.nav b{display:block;font-size:16px;margin-bottom:2px}
+.lock{position:relative}
+.lock .veil{position:absolute;inset:0;background:linear-gradient(180deg,transparent, #07090df2 55%);display:flex;align-items:flex-end;justify-content:center;padding:16px;border-radius:18px}
+.hide{display:none !important}
 </style>
 </head>
 <body>
-<header>
-  <div class="muted" style="color:#c8f27a">Judgment OS — standalone product</div>
-  <h1>Read the brief. Make the call. Check later if you were right.</h1>
-  <p>This is only the decision desk. Not a flood map. Not a grocery board.</p>
-</header>
-<nav>
-  <button class="on" data-p="today">Today (free)</button>
-  <button data-p="journal">My journal (free)</button>
-  <button data-p="paid">Paid desk R89</button>
-</nav>
-<main>
-<div id="today" class="panel on">
-  <div class="card"><h3>Free public brief — 1 Sep 2026</h3>
-  <p>Fuel, tariffs and weather as a household board. The paid desk turns this into WAIT / HOLD / MOVE.</p></div>
-  <div class="card"><h3>Economic</h3><p class="muted">Rand and levies: watch, do not trade on this page.</p></div>
-  <div class="card"><h3>Household cash</h3><p class="muted">Fill diesel only if you must drive in wet weather this week.</p></div>
-  <div class="card"><h3>Safety</h3><p class="muted">Cut-off low Thu–Fri over the Cape and Karoo. This desk does not plot maps.</p></div>
+<div class="top">
+  <div class="brand">
+    <div class="logo"><div class="mark"></div><div><div class="eyebrow">Judgment OS</div><div class="tiny">Household command · ZA</div></div></div>
+    <div class="live"><span class="dot"></span><span id="clock">—</span></div>
+  </div>
 </div>
+
+<section class="hero">
+  <h1>See the shock. Make the call. Keep the rand.</h1>
+  <p class="sub">Not a news feed. A visual desk that turns fuel, rates, weather, shops and world events into one household move — based on where you are right now.</p>
+  <div class="pills">
+    <span class="pill">Diesel inland <b>R29.11</b></span>
+    <span class="pill">95 coastal <b>R26.05</b></span>
+    <span class="pill">Prime <b>10.50%</b></span>
+    <span class="pill">USD/ZAR <b>16.01</b></span>
+  </div>
+</section>
+
+<nav class="nav">
+  <button class="on" data-p="today"><b>◆</b>Today</button>
+  <button data-p="locate"><b>◉</b>Near me</button>
+  <button data-p="money"><b>◈</b>Money</button>
+  <button data-p="intel"><b>■</b>Intel</button>
+  <button data-p="journal"><b>✓</b>Calls</button>
+  <button data-p="bots"><b>⚡</b>Bots</button>
+  <button data-p="pay"><b>R</b>Pay</button>
+</nav>
+
+<main class="wrap">
+<div id="today" class="panel on">
+  <div class="grid g2">
+    <div class="card call">
+      <div class="stamp wait" id="stamp">HOLD</div>
+      <div>
+        <div class="eyebrow" id="callWhen">4 Sep 2026 · next fuel cycle 7 Oct</div>
+        <h2 style="margin:4px 0 6px" id="callTitle">Do not panic-fill. Cut trips until October.</h2>
+        <p class="muted" id="callBody">The September hike is already on the pump (diesel inland +R2.94/l from 2 Sep). Filling now only locks in the new price. Next official DMPR move is 7 Oct — watch the CEF slate from mid-month. If you must drive the Cape today, buy only what the week needs.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Fuel pulse</h3>
+      <div class="bars" id="fuelBars"></div>
+      <div class="legend"><span>Jan</span><span>Sep 26</span></div>
+      <p class="tiny">Inland 95 official. Diesel rose 12× CPI over 12 months.</p>
+    </div>
+  </div>
+  <div class="grid g4" style="margin-top:12px" id="kpis"></div>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card">
+      <h3>Today’s board</h3>
+      <div id="todayBoard"></div>
+    </div>
+    <div class="card">
+      <h3>If you move now</h3>
+      <div id="nowMoves"></div>
+    </div>
+  </div>
+</div>
+
+<div id="locate" class="panel">
+  <div class="card" style="margin-bottom:12px">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <div>
+        <div class="eyebrow">Locator</div>
+        <h3 id="locTitle">Where you are now — not only home</h3>
+        <p class="muted" id="locMeta">Allow GPS. Deals and fuel zone follow this pin, even if you live in Stellenbosch and you are standing in Bellville.</p>
+      </div>
+      <button class="solid" id="locateBtn">Use my pin</button>
+    </div>
+    <div id="map" style="margin-top:12px"></div>
+  </div>
+  <div class="chiprow" id="dealChips"></div>
+  <div class="card" id="dealList"></div>
+</div>
+
+<div id="money" class="panel">
+  <div class="grid g2">
+    <div class="card">
+      <h3>Month board</h3>
+      <div class="ringbox">
+        <svg class="ring" viewBox="0 0 120 120" id="donut"></svg>
+        <div>
+          <div class="eyebrow">Left to live on</div>
+          <div class="n" id="leftAmt" style="font-family:Fraunces,serif;font-size:32px">R0</div>
+          <div class="tiny" id="saveHint">Set income to see the gap.</div>
+        </div>
+      </div>
+      <div id="envs"></div>
+    </div>
+    <div class="card">
+      <h3>Your numbers stay on this phone</h3>
+      <label>Take-home / month (R)</label><input id="inc" type="number" value="28000" />
+      <label>Rent / bond</label><input id="rent" type="number" value="8500" />
+      <label>Food + household</label><input id="food" type="number" value="6200" />
+      <label>Fuel / transport</label><input id="fuelb" type="number" value="2800" />
+      <label>Electricity + data</label><input id="util" type="number" value="1900" />
+      <label>School / kids</label><input id="kids" type="number" value="2200" />
+      <label>Debt repayments</label><input id="debt" type="number" value="1500" />
+      <p class="tiny" style="margin-top:8px">Prime 10.50% · Eskom +8.76% from Apr · munic +9.01% from Jul. Not advice — a picture of the squeeze.</p>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card">
+      <h3>Fuel fill maths</h3>
+      <label>Tank litres</label><input id="litres" type="number" value="50" />
+      <label>Grade</label>
+      <select id="grade">
+        <option value="p95c">Petrol 95 coastal R26.05</option>
+        <option value="p95i">Petrol 95 inland R26.92</option>
+        <option value="d05c">Diesel 0.05% coastal R28.24</option>
+        <option value="d05i" selected>Diesel 0.05% inland R29.11</option>
+        <option value="d005i">Diesel 0.005% inland R30.05</option>
+      </select>
+      <p class="display" id="fillCost" style="font-size:28px;margin:8px 0">R1,456</p>
+      <p class="tiny" id="fillNote"></p>
+    </div>
+    <div class="card">
+      <h3>Save without a lecture</h3>
+      <div id="saves"></div>
+    </div>
+  </div>
+</div>
+
+<div id="intel" class="panel">
+  <div class="chiprow" id="secChips"></div>
+  <div class="grid" id="intelGrid"></div>
+</div>
+
 <div id="journal" class="panel">
   <div class="card">
-    <h3>New decision</h3>
-    <input id="t" placeholder="What are you deciding?" />
-    <select id="g"><option>Money</option><option>Work</option><option>Home</option><option>Other</option></select>
-    <textarea id="r" placeholder="Why this call now"></textarea>
-    <button class="solid" id="save">Save on this phone</button>
+    <h3>Log the call. Score it later.</h3>
+    <input id="jt" placeholder="What are you deciding?" />
+    <select id="jg"><option>Money</option><option>Fuel</option><option>Food</option><option>Work</option><option>Home</option><option>Safety</option></select>
+    <textarea id="jr" placeholder="Why this call, today"></textarea>
+    <div class="row">
+      <button class="solid" id="jsave">Save on this phone</button>
+      <button class="ghost" id="jclear">Clear</button>
+    </div>
+    <p class="tiny">Private. Browser only. Paid desk adds a monthly calibration score.</p>
   </div>
-  <div id="list"></div>
+  <div id="jlist"></div>
 </div>
-<div id="paid" class="panel">
+
+<div id="bots" class="panel">
   <div class="card">
-    <h3>Judgment OS Science Desk — R89</h3>
-    <p>Paid area for this product only. After pay you get today’s action list.</p>
-    <p><a class="btn" href="https://paystack.com/pay/judgment-os-desk">Pay R89 on Paystack</a>
-    <button class="solid" id="unlock">Show paid preview</button></p>
+    <div class="eyebrow">Business run by bots</div>
+    <h3>Este does not sit on the desk all day</h3>
+    <p class="muted">Morning intel, marketing copy and an evening sales pack are drafted automatically. Humans only paste.</p>
+    <div id="botList"></div>
   </div>
-  <div id="paidBody" style="display:none">
-    <div class="card"><p><span class="call">WAIT</span> extra diesel unless you drive the wet Cape Thursday.</p></div>
-    <div class="card"><p><span class="call">HOLD</span> weather-sensitive deliveries Thu–Fri.</p></div>
-    <div class="card"><p><span class="call">MOVE STOCK</span> off the garage floor tonight if you flood easily.</p></div>
-    <p class="muted">Preview unlock is for you to check the product. Customers use Paystack. Test card 4084 0840 8408 4081 / 08/27 / 408.</p>
-  </div>
+</div>
+
+<div id="pay" class="panel">
+  <div class="grid g3" id="tiers"></div>
+  <p class="tiny" style="margin-top:12px">Paystack ZAR · card / Instant EFT / Capitec Pay when enabled. Settles to a SA bank after KYC. Test card 4084 0840 8408 4081 · 08/27 · 408. Never publish bank numbers here.</p>
 </div>
 </main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const $ = id => document.getElementById(id);
-document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
-  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("on"));
-  b.classList.add("on");
-  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("on"));
-  $(b.dataset.p).classList.add("on");
-});
-const KEY="judgment-os-journal";
-function load(){return JSON.parse(localStorage.getItem(KEY)||"[]")}
-function render(){
-  $("list").innerHTML = load().map((d,i)=>`<div class="card"><b>${d.t}</b> · ${d.g}<p class="muted">${d.r}</p><button onclick="del(${i})">Delete</button></div>`).join("")||"<p class=muted>No decisions yet.</p>";
-}
-window.del=i=>{const a=load();a.splice(i,1);localStorage.setItem(KEY,JSON.stringify(a));render();};
-$("save").onclick=()=>{
-  const a=load();a.unshift({t:$("t").value||"Untitled",g:$("g").value,r:$("r").value,at:Date.now()});
-  localStorage.setItem(KEY,JSON.stringify(a));$("t").value=$("r").value="";render();
+const PAY = {
+  household: 'https://paystack.com/pay/judgment-os-desk',
+  command: 'https://paystack.com/pay/judgment-os-command',
+  family: 'https://paystack.com/pay/judgment-os-family'
 };
-$("unlock").onclick=()=>{$("paidBody").style.display="block";};
-render();
+const FUEL = {p95c:26.05,p95i:26.92,d05c:28.24,d05i:29.11,d005i:30.05};
+const FUEL_HIST = [20.75,20.10,20.30,23.36,26.63,26.63,26.10,25.58,26.92];
+const CITIES = [
+  {n:'Cape Town',lat:-33.925,lon:18.424,z:'coastal'},
+  {n:'Stellenbosch',lat:-33.932,lon:18.860,z:'coastal'},
+  {n:'Somerset West',lat:-34.076,lon:18.843,z:'coastal'},
+  {n:'Bellville',lat:-33.900,lon:18.630,z:'coastal'},
+  {n:'Paarl',lat:-33.734,lon:18.975,z:'coastal'},
+  {n:'Durban',lat:-29.858,lon:31.029,z:'coastal'},
+  {n:'Gqeberha',lat:-33.961,lon:25.602,z:'coastal'},
+  {n:'Johannesburg',lat:-26.204,lon:28.047,z:'inland'},
+  {n:'Pretoria',lat:-25.747,lon:28.229,z:'inland'},
+  {n:'Bloemfontein',lat:-29.085,lon:26.160,z:'inland'},
+  {n:'Kimberley',lat:-28.728,lon:24.750,z:'inland'}
+];
+const DEALS = [
+  {item:'Whole chicken',shop:'Shoprite',price:49.99,was:69.99,unit:'/kg',until:'6 Sep',cat:'food',cities:['Cape Town','Stellenbosch','Bellville','Johannesburg'],why:'Cheapest national protein this week. Freeze extra before weekend traffic.'},
+  {item:'Pork braai chops',shop:'Checkers',price:58.99,was:79.99,unit:'/kg',until:'6 Sep',cat:'food',cities:['Cape Town','Stellenbosch','Somerset West'],why:'Weekend protein if you already have firewood. Do not drive extra km just for this.'},
+  {item:'King prawns 700g',shop:'Checkers',price:199.99,was:269.99,unit:'',until:'6 Sep',cat:'food',cities:['Cape Town','Bellville'],why:'Treat, not a staple. Only if you are already in that centre.'},
+  {item:'Fair Cape milk 2L',shop:'Checkers',price:29.99,was:37.96,unit:'',until:'6 Sep',cat:'food',cities:['Cape Town','Stellenbosch','Paarl'],why:'Staple. Stack two if you have fridge space — milk is a month-end mover.'},
+  {item:'Jumbo eggs 18s',shop:'Pick n Pay',price:24.99,was:34.99,unit:'',until:'7 Sep',cat:'food',cities:['Cape Town','Stellenbosch','Johannesburg','Pretoria'],why:'Breakfast protein cheaper than meat this week.'},
+  {item:'Diesel 0.05%',shop:'Coastal pumps',price:28.24,was:25.30,unit:'/l wholesale',until:'7 Oct',cat:'fuel',cities:['Cape Town','Stellenbosch','Durban','Gqeberha'],why:'Hike is live. Buy only the week’s kilometres.'},
+  {item:'Diesel 0.05%',shop:'Inland pumps',price:29.11,was:26.17,unit:'/l wholesale',until:'7 Oct',cat:'fuel',cities:['Johannesburg','Pretoria','Bloemfontein','Kimberley'],why:'R2.94/l above August. A 50L fill is R1,456 vs R1,309 in August.'},
+  {item:'95 ULP',shop:'Coastal pumps',price:26.05,was:24.71,unit:'/l',until:'7 Oct',cat:'fuel',cities:['Cape Town','Stellenbosch','Durban'],why:'+R1.34. Combine errands. Do not make a special trip across town.'}
+];
+const INTEL = [
+  {s:'finances',t:'Diesel outran inflation',do:'HOLD extra litres',d:'50ppm wholesale is up ~54% year-on-year vs CPI ~4.3–5%. Transport will leak into bread, milk and school runs. Cut one return trip a week (~30 km) and you claw back about R20–25 of the new diesel.',src:'IOL / DMPR 2 Sep 2026'},
+  {s:'economic',t:'Rand ~16.01 / USD',do:'WATCH imports',d:'Gold and a softer dollar helped this week. Imported extras (phones, parts, some foods) still sit on a weak-rand base. Delay non-essential import-heavy buys until after US jobs prints settle.',src:'Reuters 3 Sep 2026'},
+  {s:'finances',t:'SARB 7.00% · prime 10.50%',do:'HOLD new debt',d:'Next MPC 23 Sep. Four members held, two wanted +25bp in July. Revolving credit at prime is expensive. Pay the card, do not add a personal loan for a tank of diesel.',src:'SARB selected rates 2 Sep'},
+  {s:'environmental',t:'Cape wind + late showers',do:'HOLD exposed jobs',d:'SE 40–56 km/h and 11–14°C over the Peninsula. Garden Route had yellow rain earlier this week. Move tools off garage floors if your erf ponds.',src:'SAWS / municipal alerts'},
+  {s:'safety',t:'Wet Cape + dark evenings',do:'MOVE earlier',d:'School-run light is still short. Fuel up in daylight at a busy forecourt. Do not hunt the last 20c across a quiet industrial area after 19:00.',src:'Household safety desk'},
+  {s:'government',t:'Slate levy 83.28c/l',do:'WATCH 7 Oct',d:'The slate is adding to the pump, not cushioning it. Mid-October CEF tracking (~14 Oct) is the next real tell. Gazette numbers beat WhatsApp rumours.',src:'DMPR / CEF'},
+  {s:'world',t:'Conflict oil + shipping',do:'PLAN baskets',d:'SARB flagged conflict-induced fuel as the inflation shock of 2026. Wheat, insurance and container rates move your till even if you never read a war brief. Keep a two-week dry-goods buffer, not a bunker.',src:'SARB annual report 2025/26'},
+  {s:'social',t:'Month-end shop split',do:'BUY staples at Shoprite',d:'Same 15-item basket: Shoprite ~R1,012 vs Woolworths ~R1,302. Split only if you already pass two doors. Extra kilometres eat the saving at R29/l.',src:'The South African basket check'},
+  {s:'risks',t:'Electricity stack',do:'SAVE kWh',d:'Eskom +8.76% from 1 Apr, municipal +9.01% from 1 Jul. Homelight 60A around 343.61c/kWh. A 2 kWh geyser trim a day is ~R200/month before winter 2027.',src:'Nersa / municipal tariffs'},
+  {s:'economic',t:'Gold bid supports bonds',do:'NO TRADE on this page',d:'2035 bond yield eased to 8.58% with gold. This desk does not pick stocks. It only tells you the cost of a litre and a loaf.',src:'Reuters 3 Sep 2026'}
+];
+const BOTS = [
+  {n:'Morning desk',t:'07:00 SAST',j:'Fuel, rates, weather, gazette → one household call',next:'Sat 5 Sep 07:00'},
+  {n:'Marketing desk',t:'07:10 SAST',j:'X + WhatsApp + IG drafts from a real price. No hype.',next:'Sat 5 Sep 07:10'},
+  {n:'Sales pack',t:'19:10 SAST',j:'One paste-ready post + Paystack link. 8 minutes after work.',next:'Fri 4 Sep 19:10'},
+  {n:'Locator clerk',t:'on open',j:'Reads GPS, picks coastal/inland, filters deals for this pin.',next:'live'},
+  {n:'Money clerk',t:'on edit',j:'Redraws envelopes when your numbers change.',next:'live'}
+];
+
+const $ = id => document.getElementById(id);
+const paid = () => localStorage.getItem('jos_paid') === '1' || /[?&]paid=1/.test(location.search);
+function setPaid(){ localStorage.setItem('jos_paid','1'); }
+if (/[?&]paid=1/.test(location.search)) setPaid();
+
+function show(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on', b.dataset.p===id));
+  $(id).classList.add('on');
+  if(id==='locate') setTimeout(()=>{ if(map) map.invalidateSize(); }, 200);
+}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>show(b.dataset.p));
+
+function tick(){
+  const z = new Date().toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg',hour:'2-digit',minute:'2-digit',weekday:'short',day:'2-digit',month:'short'});
+  $('clock').textContent = z + ' SAST';
+}
+tick(); setInterval(tick, 30000);
+
+$('kpis').innerHTML = [
+  ['Diesel inland','R29.11','+R2.94','up'],
+  ['95 coastal','R26.05','+R1.34','up'],
+  ['Prime','10.50%','hold','flat'],
+  ['CPI','~4.3–5%','fuel shock','up']
+].map(([l,n,s,k])=>`<div class="card kpi"><div class="l">${l}</div><div class="n">${n}</div><div class="${k} tiny">${s}</div></div>`).join('');
+
+$('fuelBars').innerHTML = FUEL_HIST.map(v=>`<i style="height:${Math.max(12,(v-18)*8)}px" title="${v}"></i>`).join('');
+
+$('todayBoard').innerHTML = INTEL.slice(0,5).map(x=>`<div class="deal"><div class="eyebrow">${x.s}</div><div><b>${x.t}</b><div class="tiny">${x.do}</div></div><div class="tiny">${x.src.split(' ')[0]}</div></div>`).join('');
+$('nowMoves').innerHTML = [
+  ['HOLD','Do not top a half tank just because WhatsApp said fill.'],
+  ['BUY','Shoprite chicken R49.99/kg and Fair Cape milk if you are already there — specials end 6 Sep.'],
+  ['SAVE','Skip one 20 km extra hop. At inland diesel that hop costs more than the milk special.'],
+  ['WATCH','CEF mid-month slate before 7 Oct. Next MPC 23 Sep.']
+].map(([k,v])=>`<div class="deal"><div class="stamp ${k==='BUY'?'buy':k==='SAVE'?'save':'wait'}" style="flex-basis:64px;min-height:48px">${k}</div><div>${v}</div></div>`).join('');
+
+let map, youMarker, city = CITIES[1];
+function nearest(lat,lon){
+  let best=CITIES[0], d=1e9;
+  CITIES.forEach(c=>{
+    const x=(c.lat-lat)**2+(c.lon-lon)**2; if(x<d){d=x;best=c;}
+  });
+  return best;
+}
+function initMap(){
+  if(!window.L || map) return;
+  map = L.map('map').setView([city.lat,city.lon], 10);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OSM'}).addTo(map);
+  CITIES.forEach(c=>L.circleMarker([c.lat,c.lon],{radius:5,color:c.z==='coastal'?'#6cb6ff':'#f0c14b'}).addTo(map).bindPopup(c.n+' · '+c.z));
+}
+function renderDeals(filter){
+  const hour = new Date().toLocaleString('en-ZA',{timeZone:'Africa/Johannesburg',hour:'2-digit',hour12:false});
+  const h = parseInt(hour,10);
+  const slot = h<11?'Morning pin — fuel + breakfast staples first.':h<16?'Midday pin — grocery specials near this mall.':'Evening pin — butchery / freezer fills, busy lights.';
+  $('locTitle').textContent = city.n + ' · ' + city.z + ' zone';
+  $('locMeta').textContent = slot + ' Fuel desk uses ' + (city.z==='coastal'?'coastal':'inland') + ' official prices.';
+  const list = DEALS.filter(d => (!filter||filter==='all'||d.cat===filter) && d.cities.includes(city.n) || (!filter||filter==='all'||d.cat===filter) && d.cities.some(x=>CITIES.find(c=>c.n===x&&c.z===city.z)));
+  const uniq = [];
+  list.forEach(d=>{ if(!uniq.find(u=>u.item===d.item&&u.shop===d.shop)) uniq.push(d); });
+  $('dealList').innerHTML = (uniq.length?uniq:DEALS).map(d=>`<div class="deal"><div class="eyebrow">${d.cat}</div><div><b>${d.item}</b><div class="tiny">${d.shop} · until ${d.until}<br>${d.why}</div></div><div><div class="price">R${d.price}</div><div class="was">${d.was?'R'+d.was:''}</div><div class="tiny">${d.unit}</div></div></div>`).join('');
+}
+$('dealChips').innerHTML = ['all','food','fuel'].map((c,i)=>`<button class="chip ${i? '':'on'}" data-c="${c}">${c}</button>`).join('');
+$('dealChips').onclick = e => {
+  const b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#dealChips .chip').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); renderDeals(b.dataset.c);
+};
+$('locateBtn').onclick = () => {
+  if(!navigator.geolocation){ alert('Turn on location and tap again.'); return; }
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const lat=pos.coords.latitude, lon=pos.coords.longitude;
+    city = nearest(lat,lon);
+    if(map){
+      map.setView([lat,lon], 12);
+      if(youMarker) map.removeLayer(youMarker);
+      youMarker = L.marker([lat,lon]).addTo(map).bindPopup('You are here · '+city.n).openPopup();
+    }
+    renderDeals(document.querySelector('#dealChips .on')?.dataset.c||'all');
+  }, ()=>alert('Allow location so the desk can follow this pin, not only home.'), {enableHighAccuracy:true,timeout:12000});
+};
+
+function money(){
+  const inc=+$('inc').value||0, parts=[
+    ['Rent',+$('rent').value||0],
+    ['Food',+$('food').value||0],
+    ['Fuel',+$('fuelb').value||0],
+    ['Power+data',+$('util').value||0],
+    ['Kids',+$('kids').value||0],
+    ['Debt',+$('debt').value||0]
+  ];
+  const used = parts.reduce((a,b)=>a+b[1],0);
+  const left = inc-used;
+  $('leftAmt').textContent = 'R'+Math.round(left).toLocaleString('en-ZA');
+  $('saveHint').textContent = left>=0 ? 'Park this in a 32-day notice or the bond. Do not leave it on the card.' : 'You are R'+Math.abs(Math.round(left)).toLocaleString('en-ZA')+' over. Cut fuel hops and the Woolworths aisle first.';
+  const r=52,c=2*Math.PI*r, pct=inc?Math.max(0,Math.min(1,used/inc)):0;
+  $('donut').innerHTML = `<circle cx="60" cy="60" r="${r}" fill="none" stroke="#0c1117" stroke-width="12"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="${left<0?'#ff6b4a':'#d4ff4a'}" stroke-width="12" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}" transform="rotate(-90 60 60)" stroke-linecap="round"/><text x="60" y="64" text-anchor="middle" fill="#e8eef4" font-size="16" font-family="Fraunces,serif">${Math.round(pct*100)}%</text>`;
+  $('envs').innerHTML = parts.map(([n,v])=>{
+    const p=inc?Math.min(100,v/inc*100):0;
+    return `<div class="env ${p>30?'hot':''}"><div class="row" style="justify-content:space-between"><span>${n}</span><span>R${v.toLocaleString('en-ZA')}</span></div><div class="track"><div class="fill" style="width:${p}%"></div></div></div>`;
+  }).join('');
+  const L=+$('litres').value||0, g=$('grade').value, px=FUEL[g];
+  const cost=L*px, aug = g.startsWith('d') ? L*26.17 : L*25.58;
+  $('fillCost').textContent = 'R'+cost.toFixed(2);
+  $('fillNote').textContent = 'Same fill in August ~R'+aug.toFixed(0)+'. Difference R'+(cost-aug).toFixed(0)+' this tank.';
+  const tripSave = Math.round(30*FUEL.d05i);
+  $('saves').innerHTML = [
+    ['Skip a 30 km extra hop', 'R'+tripSave, 'Inland diesel 0.05% × 30L-equivalent km at ~10L/100km is the wrong unit — 30 km at 8L/100km ≈ R70. Still more than a milk special.'],
+    ['Shoprite basket vs Woolies', '~R290', 'Same 15 staples. Only split shops if you already pass both doors.'],
+    ['2 kWh off the geyser', '~R200/mo', 'At ~343.61c/kWh Homelight. Timer, not willpower.'],
+    ['Pay the card at prime', '10.50%', 'A R8,000 balance costs ~R70 interest a month before you buy anything.']
+  ].map(([t,n,d])=>`<div class="deal"><div class="price" style="font-size:18px">${n}</div><div><b>${t}</b><div class="tiny">${d}</div></div></div>`).join('');
+}
+['inc','rent','food','fuelb','util','kids','debt','litres','grade'].forEach(id=>$(id).oninput=money);
+
+const JKEY='judgment-os-journal';
+function jload(){ try{return JSON.parse(localStorage.getItem(JKEY)||'[]')}catch(e){return[]} }
+function jdraw(){
+  const a=jload();
+  $('jlist').innerHTML = a.length? a.map((d,i)=>`<div class="card" style="margin-top:10px"><b>${d.t}</b> · ${d.g}<p class="muted">${d.r}</p><button class="ghost" onclick="jdel(${i})">Delete</button></div>`).join('') : '<p class="muted">No calls yet. Log one after you fill, skip or buy.</p>';
+}
+window.jdel=i=>{const a=jload();a.splice(i,1);localStorage.setItem(JKEY,JSON.stringify(a));jdraw();};
+$('jsave').onclick=()=>{const a=jload();a.unshift({t:$('jt').value||'Untitled',g:$('jg').value,r:$('jr').value,at:Date.now()});localStorage.setItem(JKEY,JSON.stringify(a));$('jt').value=$('jr').value='';jdraw();};
+$('jclear').onclick=()=>{$('jt').value=$('jr').value='';};
+
+$('secChips').innerHTML = ['all','economic','finances','environmental','safety','government','world','social','risks'].map((s,i)=>`<button class="chip ${i?'':'on'}" data-s="${s}">${s}</button>`).join('');
+function drawIntel(sec){
+  const list = INTEL.filter(x=>sec==='all'||x.s===sec);
+  $('intelGrid').innerHTML = list.map(x=>`<div class="card"><div class="eyebrow">${x.s}</div><h3>${x.t}</h3><p><b>${x.do}</b> — ${x.d}</p><p class="tiny">${x.src}</p></div>`).join('');
+}
+$('secChips').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('#secChips .chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');drawIntel(b.dataset.s);};
+
+$('botList').innerHTML = BOTS.map(b=>`<div class="bot"><span class="st"></span><div><b>${b.n}</b><div class="tiny">${b.j}</div></div><div class="tiny">${b.t}<br>${b.next}</div></div>`).join('');
+
+$('tiers').innerHTML = [
+  {name:'Household Desk',amt:'R89',when:'/ month',why:['Daily HOLD / BUY / SAVE board','Locator for the pin you are on','Fuel fill maths + envelopes','Decision journal'],url:PAY.household,id:'h'},
+  {name:'Command Desk',amt:'R249',when:'/ month',why:['Everything in Household','Full intel stack with sources','Savings engine vs prime + tariffs','Bot-written sales + marketing pack'],url:PAY.command,id:'c'},
+  {name:'Family Command',amt:'R489',when:'/ month',why:['Everything in Command','Multi-stop family budget','Priority brief before gazette day','WhatsApp-ready evening pack'],url:PAY.family,id:'f'}
+].map(t=>`<div class="card tier"><div class="eyebrow">Paystack</div><h3>${t.name}</h3><div class="amt">${t.amt}<span class="tiny">${t.when}</span></div><ul class="muted">${t.why.map(x=>'<li>'+x+'</li>').join('')}</ul><a class="btn wide" href="${t.url}" target="_blank" rel="noopener">Pay on Paystack</a><button class="ghost wide" data-unlock="${t.id}">Preview on this phone</button></div>`).join('');
+$('tiers').onclick=e=>{
+  const b=e.target.closest('[data-unlock]'); if(!b) return;
+  setPaid(); alert('Preview unlocked on this device. Customers still pay on Paystack.');
+};
+
+drawIntel('all'); jdraw(); money(); renderDeals('all');
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initMap); else initMap();
 </script>
 </body>
 </html>
