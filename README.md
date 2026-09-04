@@ -1,28 +1,35 @@
 # Judgment OS
 
-Public daily intelligence for ordinary decisions in South Africa.
-The decision journal stays in the browser.
+Daily household intelligence for South Africa. Free public brief. Paid desk on Paystack.
 
-**Live (after Pages deploy):** https://esteprinsloo101-web.github.io/judgment-os/
+**Live:** https://esteprinsloo101-web.github.io/judgment-os/
 
-Public brief is free. Science Desk is Payoneer — same rail as [AEGIS Floodwatch](https://esteprinsloo101-web.github.io/aegis-floodwatch/).
+**Pay:** [Desk R89 on Paystack](https://paystack.com/pay/judgment-os-desk)
 
-Checkout: [Payoneer payment link](https://link.payoneer.com/Token?t=A938DA53D50E464FB7E8C35081F7344F&src=pl)
-
-Do not publish bank account numbers on this site.
+Do not publish bank account numbers on this site. Do not use Payoneer or Stripe on this product.
 
 ## What it does
 
-- Collects open signals across economic, social, environmental, finances, risks and safety
-- Turns government decisions and world events (fuel formula, wars via oil/shipping) into a household action
-- Example now: diesel is indicated up ~R2.77–R2.98/l from 2 September 2026 — fill before Wednesday
-- Local-first decision journal + calibration
-- Desk bots with a run log; a Grok automation briefs the operator at 07:00 Africa/Johannesburg
+- Collects open signals across economic, social, environmental, finances, risks, safety, government and world events
+- Turns those signals into a same-day household call (FILL / WAIT / BUY / HOLD / SAVE)
+- Locator uses where you are *now*, not only home town, to surface nearby fuel and grocery deals
+- Budget board: envelopes, fuel-fill maths, electricity shock, savings goal
+- Decision journal stays in the browser (localStorage)
+- Bots run the business: morning intel 07:00, marketing 07:10, sales 19:10 Africa/Johannesburg
+
+## Snapshot 4 Sep 2026
+
+- Petrol 95 inland R26.92 / coastal R26.05 (▲ R1.34 from 2 Sep)
+- Diesel 0.05% wholesale inland R29.11 / coastal R28.24 (▲ R2.94)
+- Next official DMPR cycle: 7 October 2026
+- USD/ZAR ~15.98 · SARB repo 7.00% · CPI 4.3% (Jul)
+- Eskom +8.76% from 1 Apr · municipal +9.01% from 1 Jul
 
 ## Honest limits
 
-- The public board is a curated snapshot, not a live government API
+- Curated snapshot, not a live government API
 - Not financial, legal or medical advice
+- Paystack pages may still be in test mode until Este flips live + KYC
 - Flood / GLOF maps live on AEGIS Floodwatch, not here
 
 Prototype for Este Prinsloo.
