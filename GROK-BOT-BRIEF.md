@@ -16,7 +16,7 @@ If Pages still shows the old 3-tab stub, trust **index.html on main** (about 30 
 
 Operator: anonymous, South Africa, part-time. GitHub `esteprinsloo101-web`.
 
-**Judgment OS** is a household command desk. It collects public intelligence (economic, social, environmental, finances, risks, safety, government, world events) and turns it into one same-day call: FILL / WAIT / BUY / HOLD / SAVE. It is not a flood map (that is AEGIS Floodwatch) and not a grocery-only board (that is RandRadar).
+**Judgment OS** is a household command desk. It collects public intelligence (economic, social, environmental, finances, risks, safety, government, world events) and turns it into one same-day call: FILL / WAIT / BUY / HOLD / SAVE. It is not a flood map and not a grocery-only board.
 
 Promise: help ordinary people budget, save money, and make better life decisions. Visual-first. Short lines. No essays.
 
@@ -46,7 +46,6 @@ H1: `See the shock. Make the call. Keep the rand.`
 - Until those slugs exist, send buyers to the R89 page
 - Test card (test mode): `4084 0840 8408 4081` / `08/27` / `408`
 - Never Payoneer on this product. Never Stripe. Never print bank account numbers
-- Same rail style as AEGIS Floodwatch Science Desk (also Paystack R89)
 
 ## Snapshot baked into the app (4 Sep 2026)
 
@@ -73,7 +72,7 @@ H1: `See the shock. Make the call. Keep the rand.`
 2. Locator must use GPS *now-location*, not only home (Stellenbosch / Fraserburg / Cape Town can all be the pin)
 3. Visuals over paragraphs. One DO per intel card
 4. Do not invent official fuel or grocery prices. If DMPR/CEF has gazetted a number, use that
-5. Do not mix in AEGIS flood maps, RandRadar flights, MONTHFILE, Jories, Eco Rehab, or Verdict retainers
+5. Do not mix in other brands or products; this brand stands alone
 6. Not financial, legal or medical advice
 7. The operator is part-time. Bots draft. Humans paste after hours. Do not spend on ads unless the operator asks
 8. If you change copy, keep Afrikaans-friendly plain English
@@ -85,10 +84,5 @@ H1: `See the shock. Make the call. Keep the rand.`
 - Flip Paystack from test to live after KYC
 - Deepen budget (goals, sinking funds) without turning it into a bank app
 - Add more cities/deals on the locator without fake prices
-
-## Sibling products (do not merge)
-
-- AEGIS Floodwatch: https://esteprinsloo101-web.github.io/aegis-floodwatch/
-- RandRadar: https://esteprinsloo101-web.github.io/randradar/
 
 Prototype. Public data stays under its own licences.

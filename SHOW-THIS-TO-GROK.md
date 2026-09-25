@@ -15,7 +15,7 @@ If the live Pages URL still looks like a beige Georgia 3-tab stub titled "househ
 
 ## What the product is
 
-Not a news site. Not a flood map (that is AEGIS Floodwatch). Not RandRadar groceries.
+Not a news site. Not a flood map. Not a grocery-only board.
 
 Judgment OS collects intelligence across economic, social, environmental, finances, risks, safety, government and world events, then turns it into a **same-day household call**: HOLD / BUY / SAVE / WAIT / FILL.
 
@@ -92,7 +92,7 @@ Do not invent revenue. Do not publish bank account numbers. Do not use Stripe. T
 - Curated snapshot, not a live government API
 - Not financial, legal or medical advice
 - Paystack may still be test-mode
-- Flood / GLOF maps belong on AEGIS Floodwatch, not here
+- Flood / GLOF maps are out of scope for this product
 
 ## What the operator asked for (do not drop these)
 

@@ -19,6 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Keep internal briefs off the public site
+        run: rm -f README.md GROK-BOT-BRIEF.md SHOW-THIS-TO-GROK.md
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
