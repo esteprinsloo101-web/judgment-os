@@ -14,7 +14,7 @@ If Pages still shows the old 3-tab stub, trust **index.html on main** (about 30 
 
 ## Who and what
 
-Operator: Este Prinsloo, South Africa (Stellenbosch / Western Cape / often travelling). Day job. X @EP19880205. GitHub `esteprinsloo101-web`.
+Operator: anonymous, South Africa, part-time. GitHub `esteprinsloo101-web`.
 
 **Judgment OS** is a household command desk. It collects public intelligence (economic, social, environmental, finances, risks, safety, government, world events) and turns it into one same-day call: FILL / WAIT / BUY / HOLD / SAVE. It is not a flood map (that is AEGIS Floodwatch) and not a grocery-only board (that is RandRadar).
 
@@ -75,10 +75,10 @@ H1: `See the shock. Make the call. Keep the rand.`
 4. Do not invent official fuel or grocery prices. If DMPR/CEF has gazetted a number, use that
 5. Do not mix in AEGIS flood maps, RandRadar flights, MONTHFILE, Jories, Eco Rehab, or Verdict retainers
 6. Not financial, legal or medical advice
-7. Este has a day job. Bots draft. Humans paste after work. Do not spend ads unless she asks
+7. The operator is part-time. Bots draft. Humans paste after hours. Do not spend on ads unless the operator asks
 8. If you change copy, keep Afrikaans-friendly plain English
 
-## What Este may ask you to do next
+## What the operator may ask you to do next
 
 - Refresh the board after 7 Oct fuel cycle
 - Create missing Paystack Command R249 and Family R489 pages, then point the Pay tab at live slugs only
@@ -91,4 +91,4 @@ H1: `See the shock. Make the call. Keep the rand.`
 - AEGIS Floodwatch: https://esteprinsloo101-web.github.io/aegis-floodwatch/
 - RandRadar: https://esteprinsloo101-web.github.io/randradar/
 
-Prototype for Este Prinsloo. Public data stays under its own licences.
+Prototype. Public data stays under its own licences.

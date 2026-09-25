@@ -29,7 +29,7 @@ Do not publish bank account numbers on this site. Do not use Payoneer or Stripe 
 
 - Curated snapshot, not a live government API
 - Not financial, legal or medical advice
-- Paystack pages may still be in test mode until Este flips live + KYC
+- Paystack pages may still be in test mode until the operator flips live + KYC
 - Flood / GLOF maps live on AEGIS Floodwatch, not here
 
-Prototype for Este Prinsloo.
+Prototype.

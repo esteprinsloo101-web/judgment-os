@@ -1,7 +1,7 @@
 # SHOW THIS FILE TO GROK
 
-You are looking at **Judgment OS**, Este Prinsloo's South African household decision app.
-Este wants you to *see the app*, then improve or operate it. Read this whole file before changing anything.
+You are looking at **Judgment OS**, a South African household decision app.
+The operator wants you to *see the app*, then improve or operate it. Read this whole file before changing anything.
 
 ## Open these first
 
@@ -9,7 +9,6 @@ Este wants you to *see the app*, then improve or operate it. Read this whole fil
 - Source (the whole app is ONE file): https://raw.githubusercontent.com/esteprinsloo101-web/judgment-os/main/index.html
 - Repo: https://github.com/esteprinsloo101-web/judgment-os
 - GitHub user: esteprinsloo101-web
-- X: @EP19880205
 - Timezone: Africa/Johannesburg
 
 If the live Pages URL still looks like a beige Georgia 3-tab stub titled "household decision desk", that is a **CDN cache of an old file**. The real app is the 30KB dark `index.html` on `main` (commit `92552e4`, Pages deploy run 7 succeeded 4 Sep 2026 09:03 SAST). Hard-refresh or read the raw file.
@@ -28,7 +27,7 @@ It must help ordinary people:
 
 Example of the original brief: when diesel is about to rise, tell people to fill. As of 4 Sep 2026 the September hike is **already on the pump**, so the call flipped to HOLD extra litres and watch the next DMPR cycle on **7 Oct 2026**.
 
-Este is often in Stellenbosch / Cape Town / Western Cape. IP may also show Fraserburg, Northern Cape (inland prices). Locator must follow the GPS pin that day.
+Users move between coastal and inland zones (e.g. Western Cape vs Northern Cape inland prices). Locator must follow the GPS pin that day.
 
 ## App map (bottom nav)
 
@@ -54,7 +53,7 @@ Defaults on Money tab (editable): take-home R28,000 · rent R8,500 · food R6,20
 | Family | R489 | https://paystack.com/pay/judgment-os-family | 404 as of 4 Sep 2026 |
 
 Until Command/Family exist in the Paystack dashboard, send buyers to the R89 slug only.
-Paystack connection on Este's Grok account is Composio, default alias `za-test` (TEST mode). Test card: `4084 0840 8408 4081` / `08/27` / `408`.
+Paystack connection on the operator's Grok account is Composio, default alias `za-test` (TEST mode). Test card: `4084 0840 8408 4081` / `08/27` / `408`.
 Flip live + KYC when real rand should settle T+1/T+2 to a SA bank.
 
 ## Snapshot baked into the app (4 Sep 2026)
@@ -78,7 +77,7 @@ Cities in the locator table: Cape Town, Stellenbosch, Somerset West, Bellville, 
 - Judgment OS marketing desk — 07:10 SAST — task `3aad0fc2-56e1-4839-8cfd-4d63379c7b8f`
 - Evening sales still on generic 19:00 self-serve pack — task `e6ec264c-f95b-43f7-8d19-38e8bc48282c` (mentions this product; a dedicated 19:10 Judgment OS sales bot may still be missing)
 
-Do not invent revenue. Do not publish bank account numbers. Do not use Stripe. Este has a day job — bots draft, she pastes after work.
+Do not invent revenue. Do not publish bank account numbers. Do not use Stripe. The operator is part-time — bots draft, a human pastes after hours.
 
 ## How to change the app
 
@@ -95,7 +94,7 @@ Do not invent revenue. Do not publish bank account numbers. Do not use Stripe. E
 - Paystack may still be test-mode
 - Flood / GLOF maps belong on AEGIS Floodwatch, not here
 
-## What Este asked for (do not drop these)
+## What the operator asked for (do not drop these)
 
 - Full attractive app worth paying for, lots of visuals, not walls of text
 - In-depth intelligence, not simple Q&A
@@ -104,7 +103,7 @@ Do not invent revenue. Do not publish bank account numbers. Do not use Stripe. E
 - Whole business managed by bots including marketing and sales
 - Paystack (updated from Payoneer)
 
-## First message Este can paste into a new Grok chat
+## First message the operator can paste into a new Grok chat
 
 ```
 This file is the handoff for Judgment OS.
